@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "whisper-wrapper",
+    "discord-bot"
+]
