@@ -1,3 +1,0 @@
-[submodule "whisper-wrapper/whisper.cpp"]
-	path = whisper-wrapper/whisper.cpp
-	url = git@github.com:ggerganov/whisper.cpp.git

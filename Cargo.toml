@@ -1,5 +1,17 @@
-[workspace]
-members = [
-    "whisper-wrapper",
-    "discord-bot"
-]
+[package]
+name = "whisper-s2t-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+whisper-rs = { git = "https://github.com/tazz4843/whisper-rs.git", rev = "6156a046286101c91b866a9d04b7f845a6cef3f7" }
+
+serde = {version = "1.0", features = ["derive"]}
+serde_json = "1.0"
+
+serenity = { version = "0.11.5", features = ["framework", "standard_framework", "voice", "client"] }
+songbird = "0.3.0"
+
+tokio = {version = "1", features = ["macros", "rt-multi-thread"]}
