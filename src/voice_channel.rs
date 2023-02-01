@@ -24,48 +24,24 @@ impl Receiver {
 impl VoiceEventHandler for Receiver {
     async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
         use EventContext as Ctx;
+        let params = crate::whisper::whisper_init();
         match ctx {
             Ctx::SpeakingStateUpdate(Speaking {
                 speaking,
                 ssrc,
                 user_id,
                 ..
-            }) => {
-                println!(
-                    "Speaking state update: user {:?} has SSRC {:?}, using {:?}",
-                    user_id, ssrc, speaking,
-                );
-            }
-            Ctx::SpeakingUpdate(data) => {
-                println!(
-                    "Source {} has {} speaking.",
-                    data.ssrc,
-                    if data.speaking { "started" } else { "stopped" },
-                );
-            }
+            }) => {}
+            Ctx::SpeakingUpdate(_data) => {}
             Ctx::VoicePacket(data) => {
                 if let Some(audio) = data.audio {
-                    println!(
-                        "Audio packet's first 5 samples: {:?}",
-                        audio.get(..5.min(audio.len()))
-                    );
-                    println!(
-                        "Audio packet sequence {:05} has {:04} bytes (decompressed from {}), SSRC {}",
-                        data.packet.sequence.0,
-                        audio.len() * std::mem::size_of::<i16>(),
-                        data.packet.payload.len(),
-                        data.packet.ssrc,
-                    );
+                    crate::whisper::whisper(params, audio);
                 } else {
                     println!("RTP packet, but no audio. Driver may not be configured to decode.");
                 }
             }
-            Ctx::RtcpPacket(data) => {
-                println!("RTCP packet received: {:?}", data.packet);
-            }
-            Ctx::ClientDisconnect(ClientDisconnect { user_id, .. }) => {
-                println!("Client disconnected: user {:?}", user_id);
-            }
+            Ctx::RtcpPacket(_data) => {}
+            Ctx::ClientDisconnect(ClientDisconnect { user_id, .. }) => {}
             _ => {
                 // We won't be registering this struct for any more event classes.
                 unimplemented!()

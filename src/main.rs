@@ -2,7 +2,7 @@ use serenity::framework::standard::{
     help_commands, Args, CommandGroup, CommandResult, HelpOptions,
 };
 use serenity::framework::{
-    standard::macros::{command, group, help},
+    standard::macros::{group, help},
     StandardFramework,
 };
 use serenity::model::prelude::*;
@@ -16,6 +16,7 @@ use std::env;
 use crate::voice_channel::{JOIN_COMMAND, LEAVE_COMMAND};
 
 mod voice_channel;
+mod whisper;
 
 struct Handler;
 
